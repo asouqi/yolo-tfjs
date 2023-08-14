@@ -8,11 +8,11 @@ import {
   Tensor4D,
   engine,
   dispose,
-  TensorContainer,
+  TensorContainer
 } from '@tensorflow/tfjs';
 
-import { YoloStrategy } from './YoloStrategy';
 import { ModelConfig, PreprocessImage } from './types';
+import createYoloDataExtractor from "./yolo/YoloContext";
 
 const SCORE_THRESHOLD = 0.5;
 const MAX_OUTPUT_SIZE = 500;
@@ -50,7 +50,7 @@ export class YOLOTf {
     engine().startScope();
 
     const { input, xRatio, yRatio } = preprocessImage ? preprocessImage(image) : this.preprocessImage(image);
-    const yolo = YoloStrategy.createStrategy(this.classes, this.config);
+    const yolo = createYoloDataExtractor(this.classes, this.config);
 
     const output = await this.model.executeAsync(input);
     const data = yolo.getPredictionData(output);
@@ -77,7 +77,7 @@ export class YOLOTf {
    * Resize image to model input shape, and pad image
    */
   private preprocessImage(image: HTMLImageElement) {
-    const shape = this.model.inputs[0].shape;
+    const shape = this.model.inputs[0].shape.slice(1, 3);
     if (!shape) {
       throw Error("Can't find the input shape in the model, please pass them to this function.");
     }

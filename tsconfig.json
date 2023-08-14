@@ -1,23 +1,17 @@
 {
-  "compilerOptions": {
-    "outDir": "./dist/",
-    "target": "es6",
-    "lib": ["dom", "es2020", "es2018.promise"],
-    "strict": true,
-    "noUnusedLocals": true,
-    "moduleResolution": "Node",
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "declaration": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "strictNullChecks": true,
-    "importHelpers": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "allowJs": true,
-    "skipLibCheck": true
-  },
-  "exclude": ["node_modules", "dist"]
+    "compilerOptions": {
+      "noImplicitAny": true,
+      "outDir": "dist/types",
+      "module": "esnext",
+      "target": "es5",
+      "allowJs": true,
+      "sourceMap": true,
+      "declaration": true,
+      "emitDeclarationOnly": true,
+      "suppressImplicitAnyIndexErrors": true,
+      "lib": ["es2018", "dom"],
+      "moduleResolution": "node",
+    },
+    "include": ["src/"],
+    "exclude": ["src/lib/**/tests"],
 }

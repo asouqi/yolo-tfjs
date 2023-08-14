@@ -1,1 +1,3 @@
-export { YOLOTf } from './YoloTf'
+import {YOLOTf} from './YoloTf'
+
+export default YOLOTf;

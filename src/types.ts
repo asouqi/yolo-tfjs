@@ -18,4 +18,3 @@ export interface PreprocessResult {
 
 export type PreprocessImage = (image: HTMLImageElement) => PreprocessResult;
 
-export type Slice = number[] & number;
