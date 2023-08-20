@@ -18,3 +18,9 @@ export interface PreprocessResult {
 
 export type PreprocessImage = (image: HTMLImageElement) => PreprocessResult;
 
+export type PredictionData = {
+  boxes:  Float32Array | Int32Array | Uint8Array
+  scores:  Float32Array | Int32Array | Uint8Array
+  classes:  Float32Array | Int32Array | Uint8Array
+  ratio: [number, number]
+}

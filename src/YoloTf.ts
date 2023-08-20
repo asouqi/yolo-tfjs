@@ -11,7 +11,7 @@ import {
   TensorContainer
 } from '@tensorflow/tfjs';
 
-import { ModelConfig, PreprocessImage } from './types';
+import {ModelConfig, PredictionData, PreprocessImage} from './types';
 import createYoloDataExtractor from "./yolo/YoloContext";
 
 const SCORE_THRESHOLD = 0.5;
@@ -58,9 +58,9 @@ export class YOLOTf {
     const nms = await tfImage.nonMaxSuppressionAsync(
       data.boxes,
       data.scores,
-      MAX_OUTPUT_SIZE,
-      IOU_THRESHOLD,
-      this.config.scoreThreshold ? this.config.scoreThreshold : SCORE_THRESHOLD,
+      this.config.maxOutputSize || MAX_OUTPUT_SIZE,
+      this.config.iouThreshold  || IOU_THRESHOLD,
+      this.config.scoreThreshold || SCORE_THRESHOLD,
     );
 
     const boxes = data.boxes.gather(nms, 0).dataSync();
@@ -79,25 +79,25 @@ export class YOLOTf {
   private preprocessImage(image: HTMLImageElement) {
     const shape = this.model.inputs[0].shape.slice(1, 3);
     if (!shape) {
-      throw Error("Can't find the input shape in the model, please pass them to this function.");
+      throw Error("Can't find the input shape in the model");
     }
 
-    let xRatio, yRatio;
+    let xRatio = 1, yRatio = 1;
 
     const [modelInputWidth, modelInputHeight] = shape;
 
     const input = tidy(() => {
       const tfImg = browser.fromPixels(image);
-      const [width, height] = tfImg.shape as number[];
+      const [height, width] = tfImg.shape as number[];
       const maxSize = Math.max(width, height);
       const paddedImage = tfImg.pad([
         [0, maxSize - height],
-        [0, maxSize - height],
+        [0, maxSize - width],
         [0, 0],
       ]);
 
-      xRatio = maxSize / height;
-      yRatio = maxSize / width;
+      xRatio = maxSize / width;
+      yRatio = maxSize / height;
 
       return tfImage
         .resizeBilinear(paddedImage as Tensor4D, [modelInputWidth, modelInputHeight])
@@ -106,5 +106,39 @@ export class YOLOTf {
     });
 
     return { input, xRatio, yRatio };
+  }
+
+  renderBox(canvasRef: HTMLCanvasElement, predictionData: PredictionData, colors: string[]){
+    const ctx = canvasRef.getContext("2d")
+    ctx.clearRect(0,0, ctx.canvas.width, ctx.canvas.height)
+
+    const {boxes, scores, classes, ratio} = predictionData
+
+    scores.forEach((score, index) => {
+      const color = colors[classes[index]]
+
+      let [x1, y1, x2, y2] = boxes.slice(index * 4, (index + 1) * 4)
+      x1 *= ratio[0]
+      x2 *= ratio[0]
+      y1 *= ratio[1]
+      y2 *= ratio[1]
+      const width = x2 - x1
+      const height = y2 - y1
+
+      /** Draw box */
+      ctx.fillStyle = YOLOTf.hexToRGB(color, 0.2)
+      ctx.fillRect(x1, y1, width, height)
+      ctx.strokeStyle = color
+      ctx.lineWidth = Math.max(Math.min(ctx.canvas.width, ctx.canvas.height) / 200, 2.5)
+      ctx.strokeRect(x1, y1, width, height)
+    })
+  }
+
+
+  static hexToRGB(hex: string, alpha: number){
+     const r = parseInt(hex.slice(1, 3), 16)
+     const g = parseInt(hex.slice(3, 5), 16)
+     const b = parseInt(hex.slice(5, 7), 16)
+     return `rgba(${r}, ${g}, ${b}, ${alpha})`
   }
 }
