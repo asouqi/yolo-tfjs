@@ -1,0 +1,19 @@
+description: Ultralytics YOLOv8n model (untrained)
+author: Ultralytics
+license: AGPL-3.0 https://ultralytics.com/license
+date: '2023-08-20T06:20:17.343601'
+version: 8.0.145
+stride: 32
+task: detect
+batch: 1
+imgsz:
+- 640
+- 640
+names:
+  0: fish
+  1: jellyfish
+  2: penguin
+  3: puffin
+  4: shark
+  5: starfish
+  6: stingray

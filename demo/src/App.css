@@ -1,0 +1,59 @@
+.container {
+  height: 100%;
+  padding: 0 10px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 16px;
+}
+
+.labels {
+  width: 300px;
+  padding: 12px;
+}
+
+.label {
+  padding: 12px;
+}
+
+.label-color {
+  height: .50rem;
+}
+
+.prediction-container{
+  display: flex;
+  justify-content: space-between;
+}
+
+.control {
+  margin: 6px;
+}
+
+.content {
+  position: relative;
+  border: 4px dashed rebeccapurple;
+}
+
+.content > img {
+  display: none;
+  width: 100%;
+  max-width: 640px;
+  max-height: 640px;
+  border-radius: 10px;
+}
+
+.content > canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
