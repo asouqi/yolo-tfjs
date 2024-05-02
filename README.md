@@ -1,68 +1,70 @@
- <div align="center">
- <img align="center" width="230" src="https://i.imgur.com/iHgtvmg.png" />
-  <h2>Typescript Library Boilerplate Basic</h2>
-  <blockquote>Minimal Library Starter Kit for your Typescript projects</blockquote>
- 
- <a href="https://www.npmjs.com/package/@hodgef/ts-library-boilerplate-basic"><img src="https://badgen.net/npm/v/@hodgef/ts-library-boilerplate-basic?color=blue" alt="npm version"></a> <a href="https://github.com/hodgef/ts-library-boilerplate"><img src="https://img.shields.io/github/last-commit/hodgef/ts-library-boilerplate" alt="latest commit"></a> <a href="https://github.com/hodgef/ts-library-boilerplate-basic/actions"><img alt="Build Status" src="https://github.com/hodgef/ts-library-boilerplate-basic/workflows/Build/badge.svg?color=green" /></a> <a href="https://github.com/hodgef/ts-library-boilerplate-basic/actions"> <img alt="Publish Status" src="https://github.com/hodgef/ts-library-boilerplate-basic/workflows/Publish/badge.svg?color=green" /></a>
+# ⚡️ Load your YOLO v5 or v8 model in browser
 
-<strong>For a plain Javascript alternative, check out [js-library-boilerplate-basic](https://github.com/hodgef/js-library-boilerplate-basic).</strong>
+Run object detection models trained with YOLOv5 YOLOv8 in browser using tensorflow.js
 
-</div>
+## Demo
+check out a demo of Aquarium Dataset object detection 
 
-## ⭐️ Features
+## Install
 
-- Webpack 5
-- Babel 7
-- Hot reloading (`npm start`)
-- Automatic Types file generation (index.d.ts)
-- UMD exports, so your library works everywhere.
-- Jest unit testing
-- Customizable file headers for your build [(Example 1)](https://github.com/hodgef/ts-library-boilerplate-basic/blob/master/build/index.js) [(Example2)](https://github.com/hodgef/ts-library-boilerplate-basic/blob/master/build/css/index.css)
-- Daily [dependabot](https://dependabot.com) dependency updates
+### Yarn
+    yarn add yolo-tfjs
+### Or NPM
+    npm install yolo-tfjs
 
-## 📦 Getting Started
+## Usage Example
 
-```
-git clone https://github.com/hodgef/ts-library-boilerplate-basic.git myLibrary
-npm install
-```
+```javascript
+import YOLOTf from "yolo-tfjs";
 
-## 💎 Customization
+const CLASSES = ["fish", "jellyfish"]
+const COLORS = ["#00C2FF", "#FF9D97"]
+const imageRef = useRef<HTMLImageElement>(null)
 
-> Before shipping, make sure to:
+// load model files
+const yoloTf = await YOLOTf.loadYoloModel(`model_path/model.json`, CLASSES, {
+    yoloVersion: 'v8', onProgress(fraction: number){
+        console.log('loading model...')
+    }})
 
-1. Edit `LICENSE` file
-2. Edit `package.json` information (These will be used to generate the headers for your built files)
-3. Edit `library: "MyLibrary"` with your library's export name in `./webpack.config.js`
+// return dection results with detected boxes
+const results = await yoloTf.predict(imageRef.current)
 
-## 🚀 Deployment
-
-1. `npm publish`
-2. Your users can include your library as usual
-
-### npm
+// draw boxes in the canvas element
+yoloTf.renderBox(canvasRef.current, {
+    ...results, ratio: [results["xRatio"],results["yRatio"]]
+}, COLORS)
 
 ```
-import MyLibrary from 'my-library';
-const libraryInstance = new MyLibrary();
-...
-```
 
-### self-host/cdn
+## API Docs
 
-```
-<script src="build/index.js"></script>
+### loadYoloModel(model, classes, config): YOLOTf
 
-const MyLibrary = window.MyLibrary.default;
-const libraryInstance = new MyLibrary();
-...
-```
+#### Args
 
-## ✅ Libraries built with this boilerplate
+Param | Type | Description
+-- | -- | --
+model | string | path to model.json file
+classes | string[] | classes of the trained model
+config | Object | see below model configuration
 
-> Made a library using this starter kit? Share it here by [submitting a pull request](https://github.com/hodgef/ts-library-boilerplate-basic/pulls)!
+Config | Type | Default | Description
+-- | -- | -- | --
+| [options.scoreThreshold] | <code>Number</code> | <code>0.5</code> | |
+| [options.iouThreshold] | <code>Number</code> | <code>0.45</code>  | |
+| [options.maxOutputSize] | <code>Number</code> | <code>500</code>  | |
+| [options.onProgress] | <code>Callback</code> | <code>(fraction: number) => void</code> | |
+| [options.yoloVersion] | <code>YoloVersion</code> | _ | selected version v5 or v8 |
 
-- [simple-keyboard](https://github.com/hodgef/simple-keyboard) - Javascript Virtual Keyboard
-- [react-simple-keyboard](https://github.com/hodgef/react-simple-keyboard) - React Virtual Keyboard
-- [simple-keyboard-layouts](https://github.com/hodgef/simple-keyboard-layouts) - Keyboard layouts for simple-keyboard
-- [atlas-monaco](https://github.com/datdao/atlas-monaco) - AtlasHCL for monaco editor
+### YOLOTf
+#### PredictionData: `{boxes, classes, scores, xRatio, yRatio}`
+
+#### predict(image, preprocessImage): PredictionData
+
+Param | Type | Description
+-- | -- | --
+image | HTMLImageElement |
+preprocessImage | (image: HTMLImageElement) => PreprocessResult | this optional param to use custom image preprocessing 
+
+#### renderBox(canvas, predictionData, colors): {boxes, classes, scores, xRatio, yRatio}
