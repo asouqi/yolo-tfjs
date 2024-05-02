@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/yolo-tfjs/static/css/main.3506e2c2.css",
+    "main.js": "/yolo-tfjs/static/js/main.abb12a9d.js",
+    "index.html": "/yolo-tfjs/index.html",
+    "main.3506e2c2.css.map": "/yolo-tfjs/static/css/main.3506e2c2.css.map",
+    "main.abb12a9d.js.map": "/yolo-tfjs/static/js/main.abb12a9d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3506e2c2.css",
+    "static/js/main.abb12a9d.js"
+  ]
+}
