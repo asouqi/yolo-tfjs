@@ -110,7 +110,7 @@ const App: React.FC = () => {
 
     {!modelLoading &&
     <div className={`content`}>
-      <img src={"#"} ref={imageRef} onLoad={detectImage} />
+      <img src={"#"} ref={imageRef} onLoad={detectImage}  alt={''}/>
       <canvas width={640} height={640} ref={canvasRef}/>
     </div>}
 
