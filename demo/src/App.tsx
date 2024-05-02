@@ -1,9 +1,6 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import './App.css';
-// @ts-ignore
 import YOLOTf from "yolo-tfjs";
-// @ts-ignore
-import {YoloVersion} from "yolo-tfjs";
 import ClockLoader from "react-spinners/ClockLoader";
 import ClassesViewer from "./ClassesViewer";
 
@@ -21,6 +18,8 @@ export const COLORS = [
   "#92CC17",
 ];
 
+
+type YoloVersion = 'v8' | 'v5';
 
 const App: React.FC = () => {
   const [version, setVersion] = useState<YoloVersion>('v8')

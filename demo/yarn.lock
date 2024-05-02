@@ -9268,3 +9268,8 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
+
+yolo-tfjs@^0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/yolo-tfjs/-/yolo-tfjs-0.0.0.tgz#b1a93515362c7759b60a9e23efc3d22ee4ad2905"
+  integrity sha512-emvhb+p8ekWR2XeGBJFTp5vDEzYSM+eFkgLcCa3X2uizLrqHp5diiL+IFJrQ3MRMfX6Np5Z53TGnuvDsxXHJjA==

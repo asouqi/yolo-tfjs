@@ -3,7 +3,7 @@
 Run object detection models trained with YOLOv5 YOLOv8 in browser using tensorflow.js
 
 ## Demo
-check out a demo of Aquarium Dataset object detection 
+check out a demo of [Aquarium Dataset object detection](https://asouqi.github.io/yolo-tfjs) 
 
 ## Install
 
