@@ -17,18 +17,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
-      - name: Install and build
-        run: yarn install && yarn run build
-
-#      - name: Test
-#        run: yarn run test
-
       - name: Build
-        run: yarn run build
+        run: |
+          npm --prefix demo install
+          npm --prefix demo run-script build
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.1
         with:
-          source-directory: ./demo
           branch: gh-pages
           folder: public
